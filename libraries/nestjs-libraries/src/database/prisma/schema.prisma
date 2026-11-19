@@ -45,6 +45,7 @@ model Organization {
   webhooks            Webhooks[]
   oauthApp            OAuthApp[]
   oauthAuthorizations OAuthAuthorization[]
+  autoPostCampaigns   AutoPostCampaign[]
 
   @@index([apiKey])
   @@index([streakSince])
@@ -693,6 +694,84 @@ model AutoPost {
   organization    Organization @relation(fields: [organizationId], references: [id])
 
   @@index([deletedAt])
+}
+
+model AutoPostCampaign {
+  id                    String                  @id @default(uuid())
+  organizationId        String
+  name                  String
+  notePrompt            String?                 @db.Text
+  postingTime           String?
+  postingTimes          String?                 @db.Text
+  scheduleDays          String?                 @db.Text
+  channels              String?                 @db.Text
+  publishMode           String                  @default("auto")
+  isActive              Boolean                 @default(true)
+  recycleMedia          Boolean                 @default(false) @map("recycle_media")
+  brandVoice            String?                 @db.Text
+  language              String?                 @default("vi")
+  hashtags              String?                 @db.Text
+  ctaStyle              String?
+  contentLength         String?                 @default("medium")
+  forbiddenWords        String?                 @db.Text
+  platformRules         String?                 @db.Text
+  copywritingFramework  String?                 @default("pas")
+  nextRunAt             DateTime?
+  lastPostedAt          DateTime?
+  lockedAt              DateTime?
+  failureCount          Int                     @default(0)
+  
+  organization          Organization            @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  media                 AutoPostCampaignMedia[]
+  runs                  AutoPostCampaignRun[]
+  
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+
+  @@index([organizationId])
+  @@index([isActive])
+  @@index([nextRunAt])
+  @@map("auto_post_campaign")
+}
+
+model AutoPostCampaignMedia {
+  id                    String                  @id @default(uuid())
+  campaignId            String                  @map("campaign_id")
+  name                  String?
+  url                   String                  @db.Text
+  type                  String                  @default("video")
+  thumbnail             String?                 @db.Text
+  originalCampaignId    String?                 @map("original_campaign_id")
+  
+  campaign              AutoPostCampaign        @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+
+  @@index([campaignId])
+  @@map("auto_post_campaign_media")
+}
+
+model AutoPostCampaignRun {
+  id                    String                  @id @default(uuid())
+  campaignId            String                  @map("campaign_id")
+  status                String                  @default("pending")
+  content               String?                 @db.Text
+  mediaUrl              String?                 @db.Text
+  platforms             String?                 @db.Text
+  postizPostId          String?                 @map("postiz_post_id")
+  errorMessage          String?                 @map("error_message") @db.Text
+  scheduledAt           DateTime?               @map("scheduled_at")
+  publishedAt           DateTime?               @map("published_at")
+  
+  campaign              AutoPostCampaign        @relation(fields: [campaignId], references: [id], onDelete: Cascade)
+  
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
+
+  @@index([campaignId])
+  @@index([status])
+  @@map("auto_post_campaign_run")
 }
 
 model Sets {

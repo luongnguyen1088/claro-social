@@ -117,7 +117,7 @@ export const CampaignsComponent: FC = () => {
       await mutate();
       toaster.show(`Đã ${!c.isActive ? 'bật' : 'tắt'} chiến dịch "${c.name}"`, 'success');
     } catch {
-      toaster.show('Lỗi khi đổi trạng thái', 'danger');
+      toaster.show('Lỗi khi đổi trạng thái', 'warning');
     }
   };
 
@@ -129,10 +129,10 @@ export const CampaignsComponent: FC = () => {
         toaster.show(`Đã tạo bài thành công: "${res.title}"`, 'success');
         await mutate();
       } else {
-        toaster.show(`Kích hoạt thất bại: ${res.reason || 'Lỗi không xác định'}`, 'danger');
+        toaster.show(`Kích hoạt thất bại: ${res.reason || 'Lỗi không xác định'}`, 'warning');
       }
     } catch {
-      toaster.show('Lỗi khi kích hoạt chiến dịch', 'danger');
+      toaster.show('Lỗi khi kích hoạt chiến dịch', 'warning');
     }
   };
 
@@ -143,7 +143,7 @@ export const CampaignsComponent: FC = () => {
       toaster.show(`Đã xóa chiến dịch "${c.name}"`, 'success');
       await mutate();
     } catch {
-      toaster.show('Lỗi khi xóa chiến dịch', 'danger');
+      toaster.show('Lỗi khi xóa chiến dịch', 'warning');
     }
   };
 
@@ -232,7 +232,7 @@ export const CampaignsComponent: FC = () => {
       setActiveModal(null);
       await mutate();
     } catch {
-      toaster.show('Lỗi khi lưu chiến dịch', 'danger');
+      toaster.show('Lỗi khi lưu chiến dịch', 'warning');
     }
   };
 
@@ -261,7 +261,7 @@ export const CampaignsComponent: FC = () => {
       const updated = await (await fetch(`/campaigns/${selectedCampaign.id}`)).json();
       setSelectedCampaign(updated);
     } catch {
-      toaster.show('Lỗi khi thêm media', 'danger');
+      toaster.show('Lỗi khi thêm media', 'warning');
     }
   };
 
@@ -273,7 +273,7 @@ export const CampaignsComponent: FC = () => {
       const updated = await (await fetch(`/campaigns/${selectedCampaign.id}`)).json();
       setSelectedCampaign(updated);
     } catch {
-      toaster.show('Lỗi khi xóa media', 'danger');
+      toaster.show('Lỗi khi xóa media', 'warning');
     }
   };
 

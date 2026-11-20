@@ -4,9 +4,7 @@ import { useState, useEffect, useMemo, useRef, useCallback, useId } from 'react'
 import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import clsx from 'clsx';
-import useCookie from 'react-use-cookie';
 import { useT } from '@gitroom/react/translation/get.transation.service.client';
-import { modeEmitter } from './mode.component';
 
 export const openCommandPalette = () => {
   if (typeof window !== 'undefined') {
@@ -17,7 +15,6 @@ export const openCommandPalette = () => {
 export const CommandPalette = () => {
   const router = useRouter();
   const t = useT();
-  const [, setMode] = useCookie('mode', 'dark');
   const [isOpen, setIsOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [activeIndex, setActiveIndex] = useState(0);
@@ -46,7 +43,6 @@ export const CommandPalette = () => {
   const items = useMemo(() => {
     const quick = label('command_palette.quick_actions', 'Quick Actions');
     const navigation = label('command_palette.navigation', 'Navigation');
-    const preferences = label('command_palette.preferences', 'Preferences');
 
     return [
       {
@@ -100,35 +96,8 @@ export const CommandPalette = () => {
         shortcut: undefined,
         run: () => router.push('/billing'),
       },
-      {
-        id: 'theme',
-        category: preferences,
-        title: label(
-          'command_palette.theme',
-          'Toggle Theme (Dark / Light)'
-        ),
-        shortcut: 'T',
-        run: () => {
-          const root = document.documentElement;
-          const dark =
-            root.classList.contains('dark') ||
-            document.body.classList.contains('dark');
-          const mode = dark ? 'light' : 'dark';
-
-          for (const element of [root, document.body]) {
-            element.classList.remove('dark', 'light');
-            element.classList.add(mode);
-          }
-
-          setMode(mode);
-          modeEmitter.emit('mode', mode);
-          window.dispatchEvent(
-            new CustomEvent('theme-change', { detail: { theme: mode } })
-          );
-        },
-      },
     ];
-  }, [label, router, setMode]);
+  }, [label, router]);
 
   const filtered = useMemo(() => {
     const words = query

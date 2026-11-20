@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { getCookie, setCookie } from 'react-use-cookie';
 import EventEmitter from 'events';
 
 export const modeEmitter = new EventEmitter();
 
-const ModeComponent = () => {
+const ModeComponent: FC = () => {
   useEffect(() => {
     document.body.classList.remove('dark');
     document.body.classList.add('light');

@@ -3,7 +3,7 @@ import { Metadata } from 'next';
 import { CampaignsComponent } from '@gitroom/frontend/components/campaigns/campaigns.component';
 
 export const metadata: Metadata = {
-  title: 'Nuôi Kênh AI & Auto-Post Studio | Postiz',
+  title: 'Chiến Dịch Nuôi Kênh AI & Auto-Post Studio | Claro Social',
   description: 'Tự động hóa tiếp thị mạng xã hội đa kênh với sức mạnh AI',
 };
 

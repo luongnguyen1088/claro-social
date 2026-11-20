@@ -64,7 +64,10 @@ jobs:
         if: success()
         run: |
           echo "Triggering Dokploy redeploy via Webhook..."
-          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://do2.claro.vn/api/deploy/compose/X-bpFKlFftcIOYuYDmOKl")
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "https://do2.claro.vn/api/deploy/compose/X-bpFKlFftcIOYuYDmOKl" \
+            -H "Content-Type: application/json" \
+            -H "x-github-event: push" \
+            -d '{"ref":"refs/heads/main"}')
           HTTP_STATUS=$(echo "$RESPONSE" | tail -n1)
           BODY=$(echo "$RESPONSE" | sed '$d')
           echo "HTTP Status: $HTTP_STATUS"

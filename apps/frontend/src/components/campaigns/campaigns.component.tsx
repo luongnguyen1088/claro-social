@@ -4,6 +4,7 @@ import React, { FC, useCallback, useMemo, useState } from 'react';
 import { useFetch } from '@gitroom/helpers/utils/custom.fetch';
 import { useToaster } from '@gitroom/react/toaster/toaster';
 import clsx from 'clsx';
+import { createPortal } from 'react-dom';
 import useSWR from 'swr';
 
 const vietnamDateTime = new Intl.DateTimeFormat('vi-VN', {
@@ -57,8 +58,16 @@ function readCampaignArray<T>(value: unknown, fallback: T[]): T[] {
   return fallback;
 }
 
-const createButton = 'inline-flex items-center justify-center gap-1.5 rounded-lg bg-[#ee4d2d] px-3.5 py-2.5 text-xs font-bold text-white shadow-sm shadow-[#ee4d2d]/30 transition-colors hover:bg-[#d94124] cursor-pointer';
-const rowIconButton = 'inline-flex size-8 shrink-0 items-center justify-center rounded-md text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground cursor-pointer';
+const createButton = 'inline-flex items-center justify-center px-4 py-2 text-xs bg-[#ee4d2d] hover:bg-[#d73211] text-white font-bold rounded-xl shadow-md transition-all active:scale-95 cursor-pointer';
+const submitButton = 'px-6 py-2.5 bg-[#ee4d2d] hover:bg-[#d73211] text-white font-bold rounded-xl shadow-md transition-all active:scale-95 cursor-pointer';
+const cancelButton = 'px-4 py-2.5 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 font-semibold rounded-xl transition-all cursor-pointer';
+const rowIconButton = 'inline-flex shrink-0 items-center justify-center p-2 rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 hover:text-neutral-900 transition-colors cursor-pointer';
+const publishButton = 'whitespace-nowrap bg-[#ee4d2d]/10 hover:bg-[#ee4d2d] text-[#ee4d2d] hover:text-white border border-[#ee4d2d]/30 font-bold px-3 py-1.5 rounded-lg text-xs transition-all cursor-pointer shadow-[0_1px_2px_0_rgb(0_0_0/0.05)]';
+const mediaBadge = 'inline-flex items-center gap-1.5 bg-orange-50 text-[#ee4d2d] border border-orange-200 font-bold px-2.5 py-1 rounded-full text-xs hover:bg-orange-100 cursor-pointer transition-colors';
+const modalBackdrop = 'fixed inset-0 z-50 bg-neutral-950/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto';
+const modalPanel = 'bg-white text-neutral-900 rounded-2xl border border-neutral-200 shadow-2xl p-6 relative z-50 w-full max-h-[calc(100dvh-2rem)] overflow-y-auto overscroll-contain space-y-4';
+const field = 'w-full px-3.5 py-2.5 rounded-xl bg-white border border-neutral-300 text-neutral-900 text-xs focus:ring-2 focus:ring-[#ee4d2d]/25 focus:border-[#ee4d2d] outline-none placeholder:text-neutral-500 transition-colors shadow-[0_1px_2px_0_rgb(0_0_0/0.05)]';
+const fieldLabel = 'text-xs font-bold text-neutral-700';
 
 export const CampaignsComponent: FC = () => {
   const fetch = useFetch();
@@ -351,21 +360,21 @@ export const CampaignsComponent: FC = () => {
   return (
     <div className="w-full min-w-0 space-y-5 animate-in fade-in duration-300">
       <header>
-        <h1 className="text-2xl font-extrabold tracking-tight text-foreground md:text-3xl">
+        <h1 className="text-2xl font-extrabold tracking-tight text-neutral-900 md:text-3xl">
           Chiến dịch nuôi kênh
         </h1>
-        <p className="mt-1 text-sm text-muted-foreground">
+        <p className="mt-1 text-sm text-neutral-600">
           Tạo nội dung bằng Fosta AI, lên lịch theo giờ vàng và tự động đăng trên nhiều kênh.
         </p>
       </header>
 
       <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {statCards.map(({ label, value, chip }) => (
-          <div key={label} className="rounded-xl border border-border bg-card bg-[radial-gradient(ellipse_at_top_right,#ee4d2d12,transparent_70%)] p-4 shadow-sm">
-            <dt className="text-xs font-semibold text-muted-foreground">{label}</dt>
-            <dd className="mt-2 text-xl font-extrabold tabular-nums text-foreground">{value}</dd>
+          <div key={label} className="rounded-xl border border-neutral-200/80 bg-white p-4 shadow-[0_1px_2px_0_rgb(0_0_0/0.05)]">
+            <dt className="text-xs font-semibold text-neutral-500">{label}</dt>
+            <dd className="mt-2 text-2xl font-black tabular-nums text-neutral-900">{value}</dd>
             <dd className="mt-2">
-              <span className="inline-flex rounded-full bg-[#ee4d2d]/10 px-2 py-0.5 text-[11px] font-semibold text-primary">
+              <span className="inline-flex rounded-full bg-[#ee4d2d]/10 px-2 py-0.5 text-[11px] font-semibold text-[#ee4d2d]">
                 {chip}
               </span>
             </dd>
@@ -373,10 +382,10 @@ export const CampaignsComponent: FC = () => {
         ))}
       </dl>
 
-      <section aria-label="Danh sách chiến dịch" className="min-w-0 overflow-hidden rounded-xl border border-border bg-card shadow-sm">
-        <div className="border-b border-border">
+      <section aria-label="Danh sách chiến dịch" className="min-w-0 overflow-hidden rounded-xl border border-neutral-200/80 bg-white shadow-[0_1px_2px_0_rgb(0_0_0/0.05)]">
+        <div className="border-b border-neutral-200">
           <div className="flex flex-wrap items-center justify-between gap-3 p-3">
-            <div className="flex h-9 w-full items-center gap-2 rounded-lg border border-border bg-background px-2.5 text-muted-foreground focus-within:ring-1 focus-within:ring-primary sm:w-72">
+            <div className="flex h-9 w-full items-center gap-2 rounded-lg border border-neutral-200 bg-white px-2.5 text-neutral-600 focus-within:ring-1 focus-within:ring-[#ee4d2d]/25 sm:w-72">
               <CampaignIcon name="search" />
               <input
                 type="text"
@@ -384,16 +393,16 @@ export const CampaignsComponent: FC = () => {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Tìm tên hoặc nội dung chiến dịch"
-                className="min-w-0 flex-1 bg-transparent text-xs text-foreground outline-none placeholder:text-muted-foreground"
+                className="min-w-0 flex-1 bg-transparent text-xs text-neutral-900 outline-none placeholder:text-neutral-600"
               />
               {searchQuery && (
-                <button type="button" aria-label="Xóa từ khóa tìm kiếm" onClick={() => setSearchQuery('')} className="rounded px-1 hover:text-foreground">
+                <button type="button" aria-label="Xóa từ khóa tìm kiếm" onClick={() => setSearchQuery('')} className="rounded px-1 hover:text-neutral-900">
                   ×
                 </button>
               )}
             </div>
             <div className="flex flex-wrap items-center gap-2">
-              <div role="group" aria-label="Kiểu hiển thị" className="inline-flex rounded-lg border border-border bg-background p-0.5">
+              <div role="group" aria-label="Kiểu hiển thị" className="inline-flex rounded-lg border border-neutral-200 bg-white p-0.5">
                 {(['table', 'grid'] as const).map((mode) => (
                   <button
                     key={mode}
@@ -402,7 +411,7 @@ export const CampaignsComponent: FC = () => {
                     onClick={() => setViewMode(mode)}
                     className={clsx(
                       'inline-flex items-center gap-1.5 whitespace-nowrap rounded-md px-2 py-1.5 text-xs font-semibold transition-colors cursor-pointer',
-                      viewMode === mode ? 'bg-[#ee4d2d]/10 text-primary' : 'text-muted-foreground hover:text-foreground'
+                      viewMode === mode ? 'bg-[#ee4d2d]/10 text-[#ee4d2d]' : 'text-neutral-600 hover:text-neutral-900'
                     )}
                   >
                     <CampaignIcon name={mode} />
@@ -416,7 +425,7 @@ export const CampaignsComponent: FC = () => {
                 disabled={isRefreshing}
                 aria-label="Làm mới dữ liệu"
                 title="Làm mới dữ liệu"
-                className="inline-flex size-9 items-center justify-center rounded-lg border border-border text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground disabled:opacity-60"
+                className="inline-flex size-9 items-center justify-center rounded-lg border border-neutral-200 text-neutral-600 transition-colors hover:bg-neutral-100 hover:text-neutral-900 disabled:opacity-60"
               >
                 <CampaignIcon name="refresh" className={clsx(isRefreshing && 'motion-safe:animate-spin')} />
               </button>
@@ -435,11 +444,11 @@ export const CampaignsComponent: FC = () => {
                 onClick={() => setStatusFilter(id)}
                 className={clsx(
                   'inline-flex items-center gap-1.5 whitespace-nowrap border-b-2 px-3 py-2.5 text-xs font-semibold transition-colors cursor-pointer',
-                  statusFilter === id ? 'border-[#ee4d2d] text-primary' : 'border-transparent text-muted-foreground hover:text-foreground'
+                  statusFilter === id ? 'border-[#ee4d2d] bg-orange-50 text-[#b9361c]' : 'border-transparent text-neutral-600 hover:text-neutral-900'
                 )}
               >
                 {label}
-                <span className={clsx('rounded-full px-1.5 tabular-nums', statusFilter === id ? 'bg-[#ee4d2d]/10' : 'bg-secondary')}>
+                <span className={clsx('rounded-full px-1.5 tabular-nums', statusFilter === id ? 'bg-[#ee4d2d]/10' : 'bg-neutral-100')}>
                   {count}
                 </span>
               </button>
@@ -448,18 +457,18 @@ export const CampaignsComponent: FC = () => {
         </div>
 
         {isLoading && (
-          <p role="status" className="px-4 py-10 text-center text-sm text-muted-foreground">Đang tải chiến dịch…</p>
+          <p role="status" className="px-4 py-10 text-center text-sm text-neutral-600">Đang tải chiến dịch…</p>
         )}
 
         {!isLoading && filteredCampaigns.length === 0 && (
-          <div className="m-4 space-y-3 rounded-xl border border-dashed border-border bg-[#ee4d2d]/5 px-4 py-10 text-center">
-            <div className="mx-auto flex size-10 items-center justify-center rounded-xl bg-[#ee4d2d]/10 text-primary">
+          <div className="m-4 space-y-3 rounded-xl border border-dashed border-neutral-200 bg-[#ee4d2d]/5 px-4 py-10 text-center">
+            <div className="mx-auto flex size-10 items-center justify-center rounded-xl bg-[#ee4d2d]/10 text-[#ee4d2d]">
               <CampaignIcon name={campaigns.length ? 'search' : 'table'} />
             </div>
-            <h2 className="text-base font-bold text-foreground">
+            <h2 className="text-base font-bold text-neutral-900">
               {campaigns.length ? 'Không tìm thấy chiến dịch phù hợp' : 'Bạn chưa có chiến dịch nào'}
             </h2>
-            <p className="text-xs text-muted-foreground">
+            <p className="text-xs text-neutral-600">
               {campaigns.length ? 'Thử từ khóa khác hoặc chọn bộ lọc khác.' : 'Tạo chiến dịch đầu tiên để lên lịch và tự động đăng bài.'}
             </p>
             <button type="button" onClick={openCreateModal} className={createButton}>
@@ -480,20 +489,20 @@ export const CampaignsComponent: FC = () => {
               return (
                 <div
                   key={c.id}
-                  className="bg-card rounded-2xl border border-border/60 hover:border-primary/40 transition-all duration-200 shadow-sm p-5 space-y-4 flex flex-col justify-between"
+                  className="bg-white rounded-2xl border border-neutral-200/80 hover:border-orange-200 transition-colors shadow-[0_1px_2px_0_rgb(0_0_0/0.05)] p-5 space-y-4 flex flex-col justify-between"
                 >
                   <div className="space-y-3">
                     {/* Card Header */}
                     <div className="flex items-start justify-between gap-3">
                       <div className="flex items-center gap-2.5 min-w-0">
-                        <div className="size-9 rounded-xl bg-primary/10 text-primary flex items-center justify-center font-bold text-base shrink-0">
+                        <div className="size-9 rounded-xl bg-orange-50 text-[#ee4d2d] flex items-center justify-center font-bold text-base shrink-0">
                           🎬
                         </div>
                         <div className="min-w-0">
-                          <h4 className="font-extrabold text-sm text-foreground truncate hover:text-primary cursor-pointer" onClick={() => openEditModal(c)}>
+                          <h4 className="font-extrabold text-sm text-neutral-900 truncate hover:text-[#ee4d2d] cursor-pointer" onClick={() => openEditModal(c)}>
                             {c.name}
                           </h4>
-                          <div className="text-[11px] text-muted-foreground">
+                          <div className="text-[11px] text-neutral-600">
                             {c.copywritingFramework?.toUpperCase() || 'PAS'} • {c.contentLength || 'Vừa'}
                           </div>
                         </div>
@@ -504,8 +513,8 @@ export const CampaignsComponent: FC = () => {
                         className={clsx(
                           'px-2.5 py-1 rounded-full text-[10px] font-bold border transition-all cursor-pointer',
                           c.isActive
-                            ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-500/20'
-                            : 'bg-zinc-800 text-zinc-400 border-zinc-700 hover:bg-zinc-700'
+                            ? 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20 hover:bg-emerald-500/20'
+                            : 'bg-neutral-100 text-neutral-700 border-neutral-200 hover:bg-neutral-200'
                         )}
                       >
                         {c.isActive ? '⚡ Bật' : '⏸️ Tắt'}
@@ -513,30 +522,30 @@ export const CampaignsComponent: FC = () => {
                     </div>
 
                     {/* Schedule & Golden Hours Bento Tile */}
-                    <div className="p-2.5 rounded-xl bg-background/80 border border-border/40 space-y-1.5 text-xs">
-                      <div className="flex items-center justify-between text-muted-foreground text-[11px] font-semibold">
+                    <div className="p-2.5 rounded-xl bg-neutral-50 border border-neutral-200 space-y-1.5 text-xs">
+                      <div className="flex items-center justify-between text-neutral-600 text-[11px] font-semibold">
                         <span>⏰ Giờ Vàng (VN):</span>
-                        <span className="text-foreground font-extrabold">{times.join(', ')}</span>
+                        <span className="text-neutral-900 font-extrabold">{times.join(', ')}</span>
                       </div>
-                      <div className="flex items-center justify-between text-muted-foreground text-[11px] font-semibold">
+                      <div className="flex items-center justify-between text-neutral-600 text-[11px] font-semibold">
                         <span>⏳ Chạy tiếp theo:</span>
-                        <span className="text-emerald-400 font-extrabold">{nextRunFormatted}</span>
+                        <span className="text-emerald-700 font-extrabold">{nextRunFormatted}</span>
                       </div>
                     </div>
 
                     {/* Badges Row */}
                     <div className="flex flex-wrap items-center gap-1.5">
                       {c.recycleMedia && (
-                        <span className="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-400 text-[10px] font-bold border border-indigo-500/20">
+                        <span className="px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-700 text-[10px] font-bold border border-indigo-500/20">
                           🔄 Tuần hoàn media
                         </span>
                       )}
-                      <span className="px-2 py-0.5 rounded-md bg-secondary text-muted-foreground text-[10px] font-bold border border-border/50">
+                      <span className="px-2 py-0.5 rounded-md bg-neutral-100 text-neutral-600 text-[10px] font-bold border border-neutral-200">
                         {c.publishMode === 'approval' ? '🛡️ Chờ duyệt' : '⚡ Tự động đăng'}
                       </span>
                       <span className={clsx(
                         'px-2 py-0.5 rounded-md text-[10px] font-bold border',
-                        mediaCount > 0 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-rose-500/10 text-rose-400 border-rose-500/20'
+                        mediaCount > 0 ? 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20' : 'bg-rose-500/10 text-rose-700 border-rose-500/20'
                       )}>
                         📸 {mediaCount} clips trong kho
                       </span>
@@ -544,17 +553,17 @@ export const CampaignsComponent: FC = () => {
 
                     {/* Prompt preview */}
                     {c.notePrompt && (
-                      <p className="text-[11px] text-muted-foreground/90 italic bg-muted/20 p-2 rounded-lg line-clamp-2">
+                      <p className="text-[11px] text-neutral-600 italic bg-neutral-50 p-2 rounded-lg line-clamp-2">
                         "{c.notePrompt}"
                       </p>
                     )}
                   </div>
 
                   {/* Card Footer Actions */}
-                  <div className="pt-3 border-t border-border/40 flex items-center justify-between gap-2">
+                  <div className="pt-3 border-t border-neutral-200 flex flex-wrap items-center justify-between gap-2">
                     <button
                       onClick={() => openMediaModal(c)}
-                      className="px-3 py-1.5 bg-secondary hover:bg-secondary/80 text-foreground font-bold text-xs rounded-xl border border-border/50 transition-all flex items-center gap-1 cursor-pointer"
+                      className={mediaBadge}
                     >
                       <span>📁</span> Kho Media ({mediaCount})
                     </button>
@@ -563,21 +572,21 @@ export const CampaignsComponent: FC = () => {
                       <button
                         onClick={() => handleTriggerNow(c)}
                         title="Chạy thử nghiệm ngay bây giờ qua AI"
-                        className="px-2.5 py-1.5 bg-primary/10 hover:bg-primary/20 text-primary font-bold text-xs rounded-xl border border-primary/30 transition-all cursor-pointer"
+                        className={publishButton}
                       >
                         🚀 Bắn bài
                       </button>
                       <button
                         onClick={() => openEditModal(c)}
                         title="Chỉnh sửa chiến dịch"
-                        className="p-1.5 text-muted-foreground hover:text-foreground transition-all cursor-pointer"
+                        className={rowIconButton}
                       >
                         ✏️
                       </button>
                       <button
                         onClick={() => handleDeleteCampaign(c)}
                         title="Xóa chiến dịch"
-                        className="p-1.5 text-muted-foreground hover:text-rose-400 transition-all cursor-pointer"
+                        className={rowIconButton}
                       >
                         🗑️
                       </button>
@@ -592,7 +601,7 @@ export const CampaignsComponent: FC = () => {
         {viewMode === 'table' && filteredCampaigns.length > 0 && (
           <div role="region" aria-label="Bảng chiến dịch có thể cuộn ngang" tabIndex={0} className="overflow-x-auto">
             <table className="w-full min-w-[960px] border-collapse text-left text-xs">
-              <thead className="border-b border-border bg-[#ee4d2d]/5 text-[11px] font-bold uppercase tracking-wider text-muted-foreground">
+              <thead className="bg-neutral-50/90 text-neutral-600 font-bold text-xs uppercase tracking-wider border-b border-neutral-200">
                 <tr>
                   <th scope="col" className="px-4 py-3">Chiến dịch &amp; Kênh</th>
                   <th scope="col" className="px-3 py-3">Trạng thái</th>
@@ -602,7 +611,7 @@ export const CampaignsComponent: FC = () => {
                   <th scope="col" className="px-4 py-3 text-right">Thao tác</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
+              <tbody>
                 {filteredCampaigns.map((c: any) => {
                   const times = readCampaignArray<string>(c.postingTimes, [c.postingTime || '11:45']);
                   const days = readCampaignArray<number>(c.scheduleDays, [0, 1, 2, 3, 4, 5, 6]);
@@ -615,20 +624,20 @@ export const CampaignsComponent: FC = () => {
                     : 'Tất cả kênh đã kết nối';
 
                   return (
-                    <tr key={c.id} className="align-middle transition-colors hover:bg-amber-500/5">
+                    <tr key={c.id} className="align-middle border-b border-neutral-100 hover:bg-orange-50/20 transition-colors">
                       <th scope="row" className="px-4 py-3 font-normal">
-                        <button type="button" onClick={() => openEditModal(c)} className="block max-w-[240px] text-left text-sm font-bold text-foreground hover:text-primary hover:underline cursor-pointer">
+                        <button type="button" onClick={() => openEditModal(c)} className="block max-w-[240px] text-left text-sm font-bold text-neutral-900 hover:text-[#ee4d2d] hover:underline cursor-pointer">
                           {c.name}
                         </button>
                         <div className="mt-1 flex flex-wrap items-center gap-1.5">
-                          <span className="rounded bg-[#ee4d2d]/10 px-1.5 py-0.5 text-[10px] font-bold text-primary">
+                          <span className="rounded bg-[#ee4d2d]/10 px-1.5 py-0.5 text-[10px] font-bold text-[#ee4d2d]">
                             {c.copywritingFramework?.toUpperCase() || 'PAS'}
                           </span>
-                          <span className="text-[11px] text-muted-foreground">
+                          <span className="text-[11px] text-neutral-600">
                             {c.publishMode === 'approval' ? 'Chờ duyệt' : 'Tự động'}
                           </span>
                         </div>
-                        <div className="mt-1 max-w-[240px] truncate text-[11px] text-muted-foreground" title={channelLabels}>
+                        <div className="mt-1 max-w-[240px] truncate text-[11px] text-neutral-600" title={channelLabels}>
                           {channelLabels}
                         </div>
                       </th>
@@ -641,23 +650,23 @@ export const CampaignsComponent: FC = () => {
                           onClick={() => handleToggleActive(c)}
                           className={clsx(
                             'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2 py-1 text-[11px] font-bold transition-colors cursor-pointer',
-                            c.isActive ? 'bg-emerald-500/10 text-emerald-700 dark:text-emerald-300' : 'bg-secondary text-muted-foreground'
+                            c.isActive ? 'bg-emerald-500/10 text-emerald-700' : 'bg-neutral-100 text-neutral-600'
                           )}
                         >
-                          <span aria-hidden="true" className={clsx('inline-flex h-3 w-5 items-center rounded-full p-0.5', c.isActive ? 'justify-end bg-emerald-600' : 'bg-muted-foreground/60')}>
+                          <span aria-hidden="true" className={clsx('inline-flex h-3 w-5 items-center rounded-full p-0.5', c.isActive ? 'justify-end bg-emerald-600' : 'bg-neutral-500')}>
                             <span className="size-2 rounded-full bg-white" />
                           </span>
                           <span aria-hidden="true">{c.isActive ? 'Đang chạy' : 'Tạm dừng'}</span>
                         </button>
                       </td>
                       <td className="px-3 py-3">
-                        <div className="max-w-48 font-bold tabular-nums text-foreground">{times.join(', ') || 'Chưa đặt giờ'}</div>
+                        <div className="max-w-48 font-bold tabular-nums text-neutral-900">{times.join(', ') || 'Chưa đặt giờ'}</div>
                         <div className="mt-1 flex gap-0.5" aria-label="Ngày chạy">
                           {scheduleDays.map(({ value, label }) => (
                             <span
                               key={value}
                               title={`${label} · ${days.includes(value) ? 'Có lịch' : 'Không có lịch'}`}
-                              className={clsx('rounded px-1 py-0.5 text-[10px]', days.includes(value) ? 'bg-secondary font-bold text-foreground' : 'text-muted-foreground line-through')}
+                              className={clsx('rounded px-1 py-0.5 text-[10px]', days.includes(value) ? 'bg-neutral-100 font-bold text-neutral-900' : 'text-neutral-600 line-through')}
                             >
                               {label}
                             </span>
@@ -666,11 +675,11 @@ export const CampaignsComponent: FC = () => {
                       </td>
                       <td className="whitespace-nowrap px-3 py-3">
                         {isScheduled && (
-                          <time dateTime={new Date(nextRun).toISOString()} className="mb-1 block font-semibold tabular-nums text-foreground">
+                          <time dateTime={new Date(nextRun).toISOString()} className="mb-1 block font-semibold tabular-nums text-neutral-900">
                             {vietnamDateTime.format(nextRun)}
                           </time>
                         )}
-                        <span className={clsx('inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold', isScheduled ? 'bg-[#ee4d2d]/10 text-primary' : 'bg-secondary text-muted-foreground')}>
+                        <span className={clsx('inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold', isScheduled ? 'bg-[#ee4d2d]/10 text-[#ee4d2d]' : 'bg-neutral-100 text-neutral-600')}>
                           {isScheduled ? (nextRun <= Date.now() ? 'Đến giờ chạy' : 'Sắp chạy') : 'Chờ lịch'}
                         </span>
                       </td>
@@ -678,12 +687,7 @@ export const CampaignsComponent: FC = () => {
                         <button
                           type="button"
                           onClick={() => openMediaModal(c)}
-                          className={clsx(
-                            'inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border px-2 py-1 text-[11px] font-bold transition-colors cursor-pointer',
-                            mediaCount > 0
-                              ? 'border-border bg-secondary/50 text-foreground hover:bg-secondary'
-                              : 'border-amber-500/25 bg-amber-500/10 text-amber-800 hover:bg-amber-500/20 dark:text-amber-300'
-                          )}
+                          className={clsx(mediaBadge, 'whitespace-nowrap')}
                         >
                           {mediaCount === 0 && <span aria-hidden="true" className="size-1.5 rounded-full bg-amber-500 motion-safe:animate-pulse" />}
                           {mediaCount === 0 ? '0 clips (Cần nạp)' : `${mediaCount} clips`}
@@ -691,7 +695,7 @@ export const CampaignsComponent: FC = () => {
                       </td>
                       <td className="px-4 py-3">
                         <div className="flex items-center justify-end gap-1">
-                          <button type="button" onClick={() => handleTriggerNow(c)} title="Tạo bài ngay bằng AI" className="mr-1 whitespace-nowrap rounded-md bg-[#ee4d2d]/10 px-2.5 py-2 font-bold text-primary transition-colors hover:bg-[#ee4d2d]/20 cursor-pointer">
+                          <button type="button" onClick={() => handleTriggerNow(c)} title="Tạo bài ngay bằng AI" className={publishButton}>
                             Đăng ngay
                           </button>
                           <button type="button" onClick={() => openMediaModal(c)} aria-label="Nạp media" title="Nạp media" className={rowIconButton}>
@@ -700,7 +704,7 @@ export const CampaignsComponent: FC = () => {
                           <button type="button" onClick={() => openEditModal(c)} aria-label="Sửa chiến dịch" title="Sửa chiến dịch" className={rowIconButton}>
                             <CampaignIcon name="edit" />
                           </button>
-                          <button type="button" onClick={() => handleDeleteCampaign(c)} aria-label="Xóa chiến dịch" title="Xóa chiến dịch" className={clsx(rowIconButton, 'hover:bg-rose-500/10 hover:text-rose-600')}>
+                          <button type="button" onClick={() => handleDeleteCampaign(c)} aria-label="Xóa chiến dịch" title="Xóa chiến dịch" className={rowIconButton}>
                             <CampaignIcon name="delete" />
                           </button>
                         </div>
@@ -715,16 +719,18 @@ export const CampaignsComponent: FC = () => {
       </section>
 
       {/* Modal Create / Edit */}
-      {(activeModal === 'create' || activeModal === 'edit') && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-card w-full max-w-lg rounded-3xl border border-border shadow-2xl p-6 space-y-4 my-8 animate-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between pb-3 border-b border-border/40">
-              <h3 className="text-lg font-extrabold text-foreground">
+      {(activeModal === 'create' || activeModal === 'edit') && createPortal(
+        <div className={modalBackdrop}>
+          <div role="dialog" aria-modal="true" aria-labelledby="campaign-editor-title" className={clsx(modalPanel, 'max-w-lg')}>
+            <div className="flex items-center justify-between gap-3 pb-3 border-b border-neutral-200">
+              <h3 id="campaign-editor-title" className="break-words text-lg font-extrabold text-neutral-900">
                 {activeModal === 'create' ? '✨ Tạo Chiến Dịch Nuôi Kênh Mới' : '✏️ Chỉnh Sửa Chiến Dịch'}
               </h3>
               <button
                 onClick={() => setActiveModal(null)}
-                className="size-8 rounded-full bg-secondary hover:bg-secondary/80 text-muted-foreground hover:text-foreground flex items-center justify-center text-sm cursor-pointer"
+                type="button"
+                aria-label="Đóng"
+                className={rowIconButton}
               >
                 ✕
               </button>
@@ -732,46 +738,50 @@ export const CampaignsComponent: FC = () => {
 
             <form onSubmit={handleSaveCampaign} className="space-y-4 text-xs font-semibold">
               <div className="space-y-1">
-                <label className="text-muted-foreground">Tên Chiến Dịch *</label>
+                <label htmlFor="campaign-name" className={fieldLabel}>Tên Chiến Dịch *</label>
                 <input
+                  id="campaign-name"
                   type="text"
                   required
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   placeholder="Ví dụ: Youtube - Giải Mã Tư Duy"
-                  className="w-full px-3.5 py-2 rounded-xl bg-background border border-border/60 text-foreground placeholder:text-muted-foreground text-xs focus:ring-1 focus:ring-primary focus:outline-none"
+                  className={field}
                 />
               </div>
 
               <div className="space-y-1">
-                <label className="text-muted-foreground">Prompt Định Hướng AI</label>
+                <label htmlFor="campaign-prompt" className={fieldLabel}>Prompt Định Hướng AI</label>
                 <textarea
+                  id="campaign-prompt"
                   rows={3}
                   value={formData.notePrompt}
                   onChange={(e) => setFormData({ ...formData, notePrompt: e.target.value })}
                   placeholder="Ví dụ: Hướng dẫn giải khối Rubik theo phương pháp trực quan..."
-                  className="w-full px-3.5 py-2 rounded-xl bg-background border border-border/60 text-foreground placeholder:text-muted-foreground text-xs focus:ring-1 focus:ring-primary focus:outline-none"
+                  className={field}
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid gap-3 sm:grid-cols-2">
                 <div className="space-y-1">
-                  <label className="text-muted-foreground">Khung Giờ Vàng (VN)</label>
+                  <label htmlFor="campaign-times" className={fieldLabel}>Khung Giờ Vàng (VN)</label>
                   <input
+                    id="campaign-times"
                     type="text"
                     value={formData.postingTimes}
                     onChange={(e) => setFormData({ ...formData, postingTimes: e.target.value })}
                     placeholder="11:45, 19:45"
-                    className="w-full px-3.5 py-2 rounded-xl bg-background border border-border/60 text-foreground text-xs focus:ring-1 focus:ring-primary focus:outline-none"
+                    className={field}
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-muted-foreground">Chế Độ Đăng</label>
+                  <label htmlFor="campaign-mode" className={fieldLabel}>Chế Độ Đăng</label>
                   <select
+                    id="campaign-mode"
                     value={formData.publishMode}
                     onChange={(e) => setFormData({ ...formData, publishMode: e.target.value })}
-                    className="w-full px-3.5 py-2 rounded-xl bg-background border border-border/60 text-foreground text-xs focus:ring-1 focus:ring-primary focus:outline-none"
+                    className={field}
                   >
                     <option value="auto">⚡ Tự động đăng (Auto)</option>
                     <option value="approval">🛡️ Chờ duyệt bài (Approval)</option>
@@ -780,132 +790,138 @@ export const CampaignsComponent: FC = () => {
               </div>
 
               <div className="space-y-1">
-                <label className="text-muted-foreground">Hashtags</label>
+                <label htmlFor="campaign-hashtags" className={fieldLabel}>Hashtags</label>
                 <input
+                  id="campaign-hashtags"
                   type="text"
                   value={formData.hashtags}
                   onChange={(e) => setFormData({ ...formData, hashtags: e.target.value })}
                   placeholder="#rubik #math #giaimatuduy"
-                  className="w-full px-3.5 py-2 rounded-xl bg-background border border-border/60 text-foreground text-xs focus:ring-1 focus:ring-primary focus:outline-none"
+                  className={field}
                 />
               </div>
 
-              <div className="flex items-center gap-2 p-3 rounded-xl bg-secondary/40 border border-border/40">
+              <div className="flex items-center gap-2 p-3 rounded-xl bg-neutral-50 border border-neutral-200">
                 <input
                   type="checkbox"
                   id="recycleMedia"
                   checked={formData.recycleMedia}
                   onChange={(e) => setFormData({ ...formData, recycleMedia: e.target.checked })}
-                  className="size-4 accent-primary cursor-pointer"
+                  className="size-4 accent-[#ee4d2d] cursor-pointer"
                 />
-                <label htmlFor="recycleMedia" className="cursor-pointer text-xs font-bold text-foreground">
+                <label htmlFor="recycleMedia" className="cursor-pointer text-xs font-bold text-neutral-900">
                   🔄 Tự động tái sử dụng (Recycle Evergreen Media khi cạn kho)
                 </label>
               </div>
 
-              <div className="pt-3 border-t border-border/40 flex items-center justify-end gap-2.5">
+              <div className="pt-3 border-t border-neutral-200 flex items-center justify-end gap-2.5">
                 <button
                   type="button"
                   onClick={() => setActiveModal(null)}
-                  className="px-4 py-2 bg-secondary hover:bg-secondary/80 text-foreground font-bold rounded-xl cursor-pointer"
+                  className={cancelButton}
                 >
                   Hủy
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2 bg-primary hover:bg-primary/90 text-white font-extrabold rounded-xl shadow-md cursor-pointer"
+                  className={submitButton}
                 >
-                  Lưu Chiến Dịch
+                  {activeModal === 'create' ? 'Tạo Chiến Dịch' : 'Lưu Chiến Dịch'}
                 </button>
               </div>
             </form>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       {/* Modal Media Management */}
-      {activeModal === 'media' && selectedCampaign && (
-        <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto">
-          <div className="bg-card w-full max-w-2xl rounded-3xl border border-border shadow-2xl p-6 space-y-4 my-8 animate-in zoom-in-95 duration-200 max-h-[85vh] flex flex-col">
-            <div className="flex items-center justify-between pb-3 border-b border-border/40 shrink-0">
-              <div>
-                <h3 className="text-lg font-extrabold text-foreground">
+      {activeModal === 'media' && selectedCampaign && createPortal(
+        <div className={modalBackdrop}>
+          <div role="dialog" aria-modal="true" aria-labelledby="campaign-media-title" className={clsx(modalPanel, 'max-w-2xl')}>
+            <div className="flex items-center justify-between gap-3 pb-3 border-b border-neutral-200 shrink-0">
+              <div className="min-w-0">
+                <h3 id="campaign-media-title" className="break-words text-lg font-extrabold text-neutral-900">
                   📁 Kho Media: {selectedCampaign.name}
                 </h3>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-neutral-600">
                   Các clip sẽ được đăng lần lượt theo thứ tự trong hàng đợi.
                 </p>
               </div>
               <button
                 onClick={() => setActiveModal(null)}
-                className="size-8 rounded-full bg-secondary hover:bg-secondary/80 text-muted-foreground hover:text-foreground flex items-center justify-center text-sm cursor-pointer"
+                type="button"
+                aria-label="Đóng"
+                className={rowIconButton}
               >
                 ✕
               </button>
             </div>
 
             {/* Quick Add URL */}
-            <form onSubmit={handleAddMedia} className="p-3 rounded-2xl bg-secondary/40 border border-border/40 space-y-2 shrink-0">
-              <span className="text-xs font-bold text-foreground">Thêm media vào hàng đợi</span>
+            <form onSubmit={handleAddMedia} className="p-3 rounded-2xl bg-neutral-50 border border-neutral-200 space-y-2 shrink-0">
+              <span className="text-xs font-bold text-neutral-900">Thêm media vào hàng đợi</span>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
                 <input
                   type="text"
+                  aria-label="Tên media"
                   placeholder="Tên media (VD: Rubik Bài 1)"
                   value={newMediaName}
                   onChange={(e) => setNewMediaName(e.target.value)}
-                  className="px-3 py-1.5 rounded-xl bg-background border border-border/60 text-foreground"
+                  className={field}
                 />
                 <input
                   type="url"
                   required
+                  aria-label="Liên kết trực tiếp"
                   placeholder="Liên kết trực tiếp (mp4, png, jpg)"
                   value={newMediaUrl}
                   onChange={(e) => setNewMediaUrl(e.target.value)}
-                  className="px-3 py-1.5 rounded-xl bg-background border border-border/60 text-foreground"
+                  className={field}
                 />
               </div>
               <button
                 type="submit"
-                className="w-full py-1.5 bg-primary text-white font-bold text-xs rounded-xl shadow-xs hover:bg-primary/90 cursor-pointer"
+                className={clsx(submitButton, 'w-full')}
               >
                 Thêm Vào Hàng Đợi
               </button>
             </form>
 
             {/* Media List */}
-            <div className="overflow-y-auto space-y-2 flex-1 pr-1">
+            <div className="space-y-2">
               {isMediaLoading ? (
-                <p role="status" className="py-8 text-center text-xs text-muted-foreground">Đang tải kho media…</p>
+                <p role="status" className="py-8 text-center text-xs text-neutral-600">Đang tải kho media…</p>
               ) : mediaError && !mediaCampaign ? (
-                <div role="alert" className="py-8 text-center text-xs text-muted-foreground">
+                <div role="alert" className="py-8 text-center text-xs text-neutral-600">
                   Không thể tải kho media.{' '}
-                  <button type="button" onClick={() => refreshMedia()} className="font-bold text-primary">
+                  <button type="button" onClick={() => refreshMedia()} className="font-bold text-[#ee4d2d]">
                     Thử lại
                   </button>
                 </div>
               ) : !mediaCampaign?.media?.length ? (
-                <div className="text-center py-8 text-xs text-muted-foreground italic">
+                <div className="text-center py-8 text-xs text-neutral-600 italic">
                   Chưa có clip nào trong hàng đợi.
                 </div>
               ) : (
                 mediaCampaign.media.map((m: any, idx: number) => (
                   <div
                     key={m.id}
-                    className="p-3 rounded-xl bg-background/80 border border-border/50 flex items-center justify-between gap-3 text-xs"
+                    className="flex items-center justify-between gap-3 rounded-xl border border-neutral-200 bg-white p-3 text-xs shadow-[0_1px_2px_0_rgb(0_0_0/0.05)]"
                   >
                     <div className="flex items-center gap-3 min-w-0">
-                      <span className="size-6 rounded-full bg-secondary font-bold text-[11px] text-muted-foreground flex items-center justify-center shrink-0">
+                      <span className="size-6 rounded-full bg-neutral-100 font-bold text-[11px] text-neutral-600 flex items-center justify-center shrink-0">
                         {idx + 1}
                       </span>
                       <div className="min-w-0">
-                        <p className="font-bold text-foreground truncate">{m.name || 'Clip chưa đặt tên'}</p>
-                        <p className="text-[10px] text-muted-foreground truncate max-w-md">{m.url}</p>
+                        <p className="font-bold text-neutral-900 truncate">{m.name || 'Clip chưa đặt tên'}</p>
+                        <p className="text-[10px] text-neutral-600 truncate max-w-md">{m.url}</p>
                       </div>
                     </div>
 
                     <button
                       onClick={() => handleDeleteMedia(m.id)}
-                      className="p-1.5 text-muted-foreground hover:text-rose-400 transition-all cursor-pointer shrink-0"
+                      className={rowIconButton}
                       title="Xóa clip"
                     >
                       🗑️
@@ -915,16 +931,17 @@ export const CampaignsComponent: FC = () => {
               )}
             </div>
 
-            <div className="pt-3 border-t border-border/40 flex justify-end shrink-0">
+            <div className="pt-3 border-t border-neutral-200 flex justify-end shrink-0">
               <button
                 onClick={() => setActiveModal(null)}
-                className="px-4 py-2 bg-secondary text-foreground font-bold text-xs rounded-xl cursor-pointer"
+                className={cancelButton}
               >
                 Đóng
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

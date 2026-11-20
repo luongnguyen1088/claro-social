@@ -1,61 +1,61 @@
-/* Claro Social: warm eggshell, stone, and coral light theme */
+/* Claro Social: Modern Clean Light Dashboard Theme (Shopee style, high contrast) */
 :root,
 .light,
 .dark {
   /* Surfaces and application controls */
-  --new-back-drop: rgba(28, 25, 23, 0.45);
+  --new-back-drop: rgba(15, 23, 42, 0.55);
   --new-settings: #ffffff;
-  --new-sep: #e7e3dc;
-  --new-border: #e7e3dc;
-  --new-bgColor: #f9f8f6;
+  --new-sep: #e2e8f0;
+  --new-border: #e2e8f0;
+  --new-bgColor: #f8fafc;
   --new-bgColorInner: #ffffff;
-  --new-bgLineColor: #e7e3dc;
+  --new-bgLineColor: #e2e8f0;
   --new-textItemFocused: #ee4d2d;
-  --new-textItemBlur: #57534e;
+  --new-textItemBlur: #64748b;
   --new-boxFocused: #fff7ed;
-  --new-textColor: 28 25 23;
-  --new-blockSeparator: #f5f3ef;
-  --new-btn-simple: #f5f3ef;
-  --new-btn-text: #1c1917;
+  --new-textColor: 15 23 42;
+  --new-blockSeparator: #f1f5f9;
+  --new-btn-simple: #f1f5f9;
+  --new-btn-text: #0f172a;
   --new-btn-primary: #ee4d2d;
   --new-ai-btn: #f97316;
-  --new-box-hover: #f5f3ef;
-  --new-table-border: #e7e3dc;
-  --new-table-header: #f9f8f6;
-  --new-table-text: #44403c;
+  --new-box-hover: #f1f5f9;
+  --new-table-border: #e2e8f0;
+  --new-table-header: #f8fafc;
+  --new-table-text: #334155;
   --new-table-text-focused: #ee4d2d;
-  --new-small-strips: #f5f3ef;
-  --new-big-strips: #f9f8f6;
-  --new-col-color: #f5f3ef;
-  --new-menu-dots: #a8a29e;
-  --new-menu-hover: #1c1917;
+  --new-small-strips: #f1f5f9;
+  --new-big-strips: #f8fafc;
+  --new-col-color: #f1f5f9;
+  --new-menu-dots: #94a3b8;
+  --new-menu-hover: #0f172a;
   --menu-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --popup-color: rgba(28, 25, 23, 0.15);
-  --border-preview: #e7e3dc;
-  --preview-box-shadow: 0 1px 0 rgba(28, 25, 23, 0.04), 0 8px 24px -12px rgba(45, 30, 20, 0.15);
+  --popup-color: rgba(15, 23, 42, 0.15);
+  --border-preview: #e2e8f0;
+  --preview-box-shadow: 0 1px 0 rgba(15, 23, 42, 0.04), 0 8px 24px -12px rgba(15, 23, 42, 0.12);
 
   /* Social preview cards in Light Mode */
-  --linkedin-border: #e7e3dc;
+  --linkedin-border: #e2e8f0;
   --linkedin-bg: #ffffff;
-  --linkedin-text: #44403c;
+  --linkedin-text: #334155;
   --facebook-bg: #ffffff;
-  --facebook-bg-comment: #f5f3ef;
+  --facebook-bg-comment: #f1f5f9;
   --instagram-bg: #ffffff;
-  --tiktok-item-bg: #f9f8f6;
-  --tiktok-item-icon-bg: #44403c;
+  --tiktok-item-bg: #f8fafc;
+  --tiktok-item-icon-bg: #334155;
   --youtube-bg: #ffffff;
-  --youtube-button: #1c1917;
-  --youtube-action-color: #f5f3ef;
-  --youtube-svg-border: #44403c;
+  --youtube-button: #0f172a;
+  --youtube-action-color: #f1f5f9;
+  --youtube-svg-border: #334155;
 
   /* Standard UI Semantic Colors (Shadcn & Modern Component Tokens) */
   --radius: 0.75rem;
-  --background: #f9f8f6;
-  --foreground: #1c1917;
+  --background: #f8fafc;
+  --foreground: #0f172a;
   --card: #ffffff;
-  --card-foreground: #1c1917;
+  --card-foreground: #0f172a;
   --popover: #ffffff;
-  --popover-foreground: #1c1917;
+  --popover-foreground: #0f172a;
   --primary: #ee4d2d;
   --primary-foreground: #ffffff;
   --secondary: #f5f3ef;

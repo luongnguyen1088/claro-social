@@ -5,6 +5,15 @@ module.exports = {
   theme: {
     extend: {
       colors: {
+        card: '#ffffff',
+        background: '#f8fafc',
+        foreground: '#0f172a',
+        border: '#e2e8f0',
+        muted: '#f1f5f9',
+        'muted-foreground': '#64748b',
+        brand: '#ee4d2d',
+        'brand-hover': '#d73211',
+        shopee: '#ee4d2d',
         primary: 'var(--color-primary)',
         secondary: 'var(--color-secondary)',
         textColor: 'var(--new-btn-text)',

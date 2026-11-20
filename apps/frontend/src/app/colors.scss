@@ -1,4 +1,4 @@
-/* Theme: Enforce Single Light Mode (Clean SaaS Slate/Indigo WCAG AAA) - Claro Social v1.0.1 */
+/* Theme: Enforce Single Light Mode (Clean SaaS Slate/Indigo Contrast) - Claro Social v1.0.1 */
 :root,
 .light,
 .dark {
@@ -11,18 +11,18 @@
   --new-bgColorInner: #ffffff;
   --new-bgLineColor: #e2e8f0;
   --new-textItemFocused: #4338ca;
-  --new-textItemBlur: #64748b;
+  --new-textItemBlur: #334155;
   --new-boxFocused: #eef2ff;
   --new-textColor: 15 23 42;
   --new-blockSeparator: #f1f5f9;
   --new-btn-simple: #f1f5f9;
   --new-btn-text: #0f172a;
-  --new-btn-primary: #6366f1;
+  --new-btn-primary: #4f46e5;
   --new-ai-btn: #d946ef;
   --new-box-hover: #f1f5f9;
   --new-table-border: #e2e8f0;
   --new-table-header: #f8fafc;
-  --new-table-text: #64748b;
+  --new-table-text: #334155;
   --new-table-text-focused: #4338ca;
   --new-small-strips: #f1f5f9;
   --new-big-strips: #f8fafc;
@@ -55,19 +55,19 @@
   --card-foreground: #0f172a;
   --popover: #ffffff;
   --popover-foreground: #0f172a;
-  --primary: #6366f1;
+  --primary: #4f46e5;
   --primary-foreground: #ffffff;
   --secondary: #f1f5f9;
   --secondary-foreground: #0f172a;
   --muted: #f1f5f9;
-  --muted-foreground: #64748b;
+  --muted-foreground: #475569;
   --accent: #f1f5f9;
   --accent-foreground: #0f172a;
   --destructive: #ef4444;
   --destructive-foreground: #ffffff;
   --border: #e2e8f0;
   --input: #e2e8f0;
-  --ring: #6366f1;
+  --ring: #4f46e5;
 
   /* Legacy color tokens mapped to crisp Light Mode */
   --color-primary: #f8fafc;

@@ -66,6 +66,27 @@ export const useMenuItem = () => {
       path: '/campaigns',
     },
     {
+      name: t('video_sources', 'Nguồn Video'),
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="21"
+          height="21"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          aria-hidden="true"
+        >
+          <rect x="3" y="4" width="18" height="16" rx="2" />
+          <path d="M7 4v16M17 4v16M3 9h4m-4 6h4m10-6h4m-4 6h4" />
+        </svg>
+      ),
+      path: '/videos',
+    },
+    {
       name: t('agent', 'Trợ lý AI'),
       icon: (
         <svg
